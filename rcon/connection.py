@@ -22,7 +22,7 @@ class Connection():
 
     def recv_packet(self):
         size = self.__from_bytes(self.__read(4))
-        packet_data = self.__read(max(0, size - 4))
+        packet_data = self.__read(size)
         return Packet.from_bytes(packet_data)
 
     def close(self):
