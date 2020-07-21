@@ -1,4 +1,4 @@
 # coidng: utf-8
 
-def hoge():
-  print('hoge')
+def fuga():
+  print('fugafuga')
