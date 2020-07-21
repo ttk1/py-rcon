@@ -2,6 +2,8 @@
 
 import socket
 
+from rcon.packet import Packet
+
 
 class Connection():
     def __init__(self, host, port):
@@ -11,11 +13,26 @@ class Connection():
         )
         self.sock.connect((host, port))
 
+    @staticmethod
+    def __from_bytes(value):
+        return int.from_bytes(value, byteorder='little')
+
+    def send_packet(self, packet: Packet):
+        self.__write(packet.to_bytes())
+
+    def recv_packet(self):
+        size = self.__from_bytes(self.__read(4))
+        packet_data = self.__read(max(0, size - 4))
+        return Packet.from_bytes(packet_data)
+
     def close(self):
         self.sock.close()
 
-    def write(self, data):
-        pass
+    def __write(self, data):
+        self.sock.sendall(data)
 
-    def read(self, length):
-        pass
+    def __read(self, length):
+        packet_data = self.sock.recv(length)
+        if len(packet_data) < length:
+            raise Exception('Received few bytes!')
+        return packet_data
