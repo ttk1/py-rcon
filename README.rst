@@ -1,7 +1,7 @@
 py-rcon
 =======
 
-This is Python implementation RCON.
+This is Python implementation of RCON.
 
 Installation
 ------------
