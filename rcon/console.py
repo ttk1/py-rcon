@@ -9,12 +9,17 @@ class Console():
         if not password:
             raise Exception('Password is required!')
 
+        self.id = 0
         self.conn = Connection(host, port)
         self.__login(password)
 
+    def __get_id(self):
+        self.id += 1
+        return self.id
+
     def __login(self, password):
         req = Packet(
-            id=1,
+            id=self.__get_id(),
             type=PacketType.SERVERDATA_AUTH,
             body=password
         )
@@ -24,7 +29,7 @@ class Console():
 
     def command(self, command):
         req = Packet(
-            id=2,
+            id=self.__get_id(),
             type=PacketType.SERVERDATA_EXECCOMMAND,
             body=command
         )
