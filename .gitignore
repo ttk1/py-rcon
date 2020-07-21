@@ -1,0 +1,3 @@
+rcon.egg-info/
+*.pyc
+dist/
