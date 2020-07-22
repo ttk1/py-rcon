@@ -16,8 +16,8 @@ class Packet():
         self.type = type
         self.body = body
 
-    @classmethod
-    def from_bytes(cls, packet_data):
+    @staticmethod
+    def from_bytes(packet_data):
         offset = 0
         # ID
         id = bytes_to_int(packet_data[offset:offset+4])
@@ -27,7 +27,7 @@ class Packet():
         offset += 4
         # Body
         body = packet_data[offset:].decode('utf-8')
-        return cls(
+        return Packet(
             id=id,
             type=type,
             body=body
