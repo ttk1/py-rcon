@@ -1,5 +1,3 @@
-# coidng: utf-8
-
 import socket
 
 from rcon.packet import Packet

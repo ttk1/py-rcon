@@ -1,3 +1,5 @@
+#!/bin/env python
+
 from rcon import Console
 
 console = Console(host='localhost', password='py-rcon')

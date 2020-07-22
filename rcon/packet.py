@@ -1,5 +1,3 @@
-# coidng: utf-8
-
 from enum import Enum
 
 
