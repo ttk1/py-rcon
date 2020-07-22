@@ -9,15 +9,15 @@ class Console():
 
         self.id = 0
         self.conn = Connection(host, port)
-        self.__login(password)
+        self._login(password)
 
-    def __get_id(self):
+    def _get_id(self):
         self.id += 1
         return self.id
 
-    def __login(self, password):
+    def _login(self, password):
         req = Packet(
-            id=self.__get_id(),
+            id=self._get_id(),
             type=PacketType.SERVERDATA_AUTH,
             body=password
         )
@@ -27,7 +27,7 @@ class Console():
 
     def command(self, command):
         req = Packet(
-            id=self.__get_id(),
+            id=self._get_id(),
             type=PacketType.SERVERDATA_EXECCOMMAND,
             body=command
         )

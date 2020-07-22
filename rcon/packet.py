@@ -1,5 +1,7 @@
 from enum import Enum
 
+from rcon.util import int_to_bytes, bytes_to_int
+
 
 class PacketType(Enum):
     SERVERDATA_AUTH = 3
@@ -18,39 +20,31 @@ class Packet():
     def from_bytes(cls, packet_data):
         offset = 0
         # ID
-        id = cls.__from_bytes(packet_data[offset:offset+4])
+        id = bytes_to_int(packet_data[offset:offset+4])
         offset += 4
         # Type
-        type = PacketType(cls.__from_bytes(packet_data[offset:offset+4]))
+        type = PacketType(bytes_to_int(packet_data[offset:offset+4]))
         offset += 4
         # Body
         body = packet_data[offset:].decode('utf-8')
-        return Packet(
+        return cls(
             id=id,
             type=type,
             body=body
         )
 
-    @staticmethod
-    def __to_bytes(value):
-        return value.to_bytes(4, byteorder='little')
-
-    @staticmethod
-    def __from_bytes(value):
-        return int.from_bytes(value, byteorder='little')
-
     def to_bytes(self):
         packet_data = b''
         # ID
-        packet_data += self.__to_bytes(self.id)
+        packet_data += int_to_bytes(self.id)
         # Type
-        packet_data += self.__to_bytes(self.type.value)
+        packet_data += int_to_bytes(self.type.value)
         # Body
         packet_data += self.body.encode(encoding='utf-8')
         # Empty String
         packet_data += b'\x00'
         # Size
-        packet_data = self.__to_bytes(len(packet_data)) + packet_data
+        packet_data = int_to_bytes(len(packet_data)) + packet_data
         return packet_data
 
     def print(self):
