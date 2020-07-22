@@ -16,7 +16,7 @@ Example
 .. code-block:: python
 
   from rcon import Console
-  
+
   console = Console(host='localhost', password='py-rcon')
   console.command('say hello')
   console.close()
