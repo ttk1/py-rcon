@@ -3,3 +3,4 @@ rcon.egg-info/
 dist/
 .vscode/settings.json
 .vscode/
+.coverage

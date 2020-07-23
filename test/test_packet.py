@@ -1,10 +1,9 @@
 from unittest import TestCase
-from unittest.mock import Mock, patch, call
 
 from rcon.packet import Packet, PacketType
 
 
-class TestPacket(TestCase, Packet):
+class TestPacket(TestCase):
     def test_from_bytes(self):
         packet_data = (
             # ID = 1
