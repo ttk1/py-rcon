@@ -5,7 +5,7 @@ from rcon.console import Console
 from rcon.packet import PacketType
 
 
-class TestPacket(TestCase):
+class TestConsole(TestCase):
     @patch('rcon.console.Connection')
     def setUp(self, Connection):
         conn = Mock()

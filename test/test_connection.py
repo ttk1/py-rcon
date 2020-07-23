@@ -4,7 +4,7 @@ from unittest.mock import patch, Mock, call
 from rcon.connection import Connection
 
 
-class TestPacket(TestCase):
+class TestConnection(TestCase):
     @patch('rcon.connection.socket')
     def setUp(self, socket):
         sock = Mock()
