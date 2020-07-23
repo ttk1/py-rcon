@@ -32,4 +32,5 @@ console output:
 Protocol Specification
 ----------------------
 
-https://wiki.vg/RCON
+* https://wiki.vg/RCON
+* https://developer.valvesoftware.com/wiki/Source_RCON_Protocol
