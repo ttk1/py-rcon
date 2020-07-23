@@ -3,10 +3,7 @@ from rcon.packet import Packet, PacketType
 
 
 class Console():
-    def __init__(self, host, port=25575, password=''):
-        if not password:
-            raise Exception('Password is required!')
-
+    def __init__(self, host, password, port=25575):
         self.id = 0
         self.conn = Connection(host, port)
         self._login(password)
