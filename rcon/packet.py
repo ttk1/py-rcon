@@ -18,34 +18,26 @@ class Packet():
 
     @staticmethod
     def from_bytes(packet_data):
-        offset = 0
-        # ID
-        id = bytes_to_int(packet_data[offset:offset+4])
-        offset += 4
-        # Type
-        type = PacketType(bytes_to_int(packet_data[offset:offset+4]))
-        offset += 4
-        # Body
-        body = packet_data[offset:].decode('utf-8')
         return Packet(
-            id=id,
-            type=type,
-            body=body
+            # ID (0 - 3)
+            id=bytes_to_int(packet_data[0:4]),
+            # Type (4 - 7)
+            type=PacketType(bytes_to_int(packet_data[4:8])),
+            # Body (8 -)
+            body=packet_data[8:].decode('utf-8')
         )
 
     def to_bytes(self):
-        packet_data = b''
-        # ID
-        packet_data += int_to_bytes(self.id)
-        # Type
-        packet_data += int_to_bytes(self.type.value)
-        # Body
-        packet_data += self.body.encode(encoding='utf-8')
-        # Empty String
-        packet_data += b'\x00'
-        # Size
-        packet_data = int_to_bytes(len(packet_data)) + packet_data
-        return packet_data
+        return (
+            # ID
+            int_to_bytes(self.id) +
+            # Type
+            int_to_bytes(self.type.value) +
+            # Body
+            self.body.encode(encoding='utf-8') +
+            # Empty String
+            b'\x00'
+        )
 
     def print(self):
         print('id:', self.id)

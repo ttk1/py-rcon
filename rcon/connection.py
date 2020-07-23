@@ -1,7 +1,7 @@
 import socket
 
 from rcon.packet import Packet
-from rcon.util import bytes_to_int
+from rcon.util import int_to_bytes, bytes_to_int
 
 
 class Connection():
@@ -13,7 +13,11 @@ class Connection():
         self.sock.connect((host, port))
 
     def send_packet(self, packet: Packet):
-        self._write(packet.to_bytes())
+        packet_data = packet.to_bytes()
+        self._write(
+            int_to_bytes(len(packet_data)) +
+            packet_data
+        )
 
     def recv_packet(self):
         size = bytes_to_int(self._read(4))
