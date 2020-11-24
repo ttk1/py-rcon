@@ -8,7 +8,9 @@ Installation
 
 .. code-block:: bash
 
-  python setup.py install
+  git clone https://github.com/ttk1/py-rcon.git
+  cd py-rcon
+  pip install .
 
 Example
 -------
