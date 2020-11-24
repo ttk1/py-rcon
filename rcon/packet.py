@@ -24,7 +24,7 @@ class Packet():
             # Type (4 - 7)
             type=PacketType(bytes_to_int(packet_data[4:8])),
             # Body (8 -)
-            body=packet_data[8:-1].decode('utf-8')
+            body=packet_data[8:-2].decode('utf-8')
         )
 
     def to_bytes(self):
@@ -36,7 +36,7 @@ class Packet():
             # Body
             self.body.encode(encoding='utf-8') +
             # Empty String
-            b'\x00'
+            b'\x00\x00'
         )
 
     def print(self):

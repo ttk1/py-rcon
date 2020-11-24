@@ -13,7 +13,7 @@ class TestPacket(TestCase):
             # Body
             b'password'
             # Empty String
-            b'\x00'
+            b'\x00\x00'
         )
         packet = Packet.from_bytes(packet_data)
 
@@ -47,7 +47,7 @@ class TestPacket(TestCase):
             # Body
             b'password'
             # Empty String
-            b'\x00'
+            b'\x00\x00'
         )
         actual = packet.to_bytes()
         self.assertEqual(expected, actual)
