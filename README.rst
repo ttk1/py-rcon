@@ -8,9 +8,7 @@ Installation
 
 .. code-block:: bash
 
-  git clone https://github.com/ttk1/py-rcon.git
-  cd py-rcon
-  pip install .
+  pip install git+https://github.com/ttk1/py-rcon.git
 
 Example
 -------
@@ -30,6 +28,18 @@ console output:
   [04:14:25] [RCON Listener #1/INFO]: Thread RCON Client /127.0.0.1 started
   [04:14:25] [Server thread/INFO]: [Rcon] hello
   [04:14:25] [RCON Client /127.0.0.1 #4/INFO]: Thread RCON Client /127.0.0.1 shutting down
+
+RCON Shell
+----------
+
+.. code-block:: bash
+
+  $ python -m rcon
+  Enter host: localhost
+  Enter password:
+  hi!
+  [localhost:25575] > list
+  There are 0 of a max of 20 players online:
 
 Protocol Specification
 ----------------------
