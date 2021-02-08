@@ -20,7 +20,8 @@ class Console():
         )
         self._conn.send_packet(req)
         res = self._conn.recv_packet()
-        res.print()
+        if res.id == 4294967295:
+            raise Exception('Authentication failed: wrong password')
 
     def command(self, command):
         req = Packet(
@@ -29,8 +30,7 @@ class Console():
             body=command
         )
         self._conn.send_packet(req)
-        res = self._conn.recv_packet()
-        res.print()
+        return self._conn.recv_packet()
 
     def close(self):
         self._conn.close()
