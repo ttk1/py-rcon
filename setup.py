@@ -13,7 +13,7 @@ with open('LICENSE') as f:
 
 setup(
     name='rcon',
-    version='1.0.2',
+    version='1.1.0',
     description='Python implementation of RCON',
     long_description=readme,
     author='tama@ttk1',
