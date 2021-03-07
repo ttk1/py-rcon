@@ -10,12 +10,12 @@ if __name__ == '__main__':
     parser.add_argument('--password')
     args = parser.parse_args()
 
-    if args.host == None:
+    if args.host is None:
         host = input('Enter host: ')
     else:
         host = args.host
 
-    if args.password == None:
+    if args.password is None:
         password = getpass('Enter password: ')
     else:
         password = args.password
