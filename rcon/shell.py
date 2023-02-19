@@ -1,4 +1,8 @@
-import readline
+try:
+    import readline
+except ModuleNotFoundError:
+    pass
+
 import traceback
 
 from rcon.console import Console
