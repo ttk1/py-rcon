@@ -6,6 +6,7 @@ except ModuleNotFoundError:
 import traceback
 
 from rcon.console import Console
+from rcon.util import remove_formatting_codes
 
 
 class Shell():
@@ -20,8 +21,8 @@ class Shell():
         while True:
             try:
                 command = input(f'[{self._host}:{self._port}] > ')
-                res = self._console.command(command)
-                print(res.body)
+                res_body = self._console.command(command).body
+                print(remove_formatting_codes(res_body))
             except KeyboardInterrupt:
                 print()
                 continue

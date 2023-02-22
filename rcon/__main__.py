@@ -3,7 +3,8 @@ from getpass import getpass
 
 from rcon.shell import Shell
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--host')
     parser.add_argument('--port', default=25575)
@@ -22,3 +23,7 @@ if __name__ == '__main__':
 
     shell = Shell(host, password, args.port)
     shell.start()
+
+
+if __name__ == '__main__':
+    main()

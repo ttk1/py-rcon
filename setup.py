@@ -10,12 +10,18 @@ with open('LICENSE') as f:
 
 setup(
     name='rcon',
-    version='1.1.0',
+    version='1.2.0',
     description='Python implementation of RCON',
     long_description=readme,
     author='tama@ttk1',
     author_email='tama@ttk1.net',
     url='https://github.com/ttk1/py-rcon',
     license=license,
-    packages=find_packages(exclude=('test',))
+    packages=find_packages(exclude=('test',)),
+    entry_points={
+        'console_scripts': [
+            'rcon-shell = rcon.__main__:main',
+            'rcon-gui = rcon.gui:main'
+        ]
+    }
 )
