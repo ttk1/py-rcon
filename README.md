@@ -49,8 +49,8 @@ Start GUI:
 $ rcon-gui
 ```
 
-![image](https://user-images.githubusercontent.com/17878271/220711926-b31b3f05-3456-4039-aa52-9443800b915c.png)
-![image](https://user-images.githubusercontent.com/17878271/220711354-c0d6cec4-ff87-4610-b17e-63858b33d6d0.png)
+![image](https://user-images.githubusercontent.com/17878271/220715316-d6797f91-b4c2-4907-b28f-8289f3653e02.png)
+![image](https://user-images.githubusercontent.com/17878271/220715435-bcfc12af-d5ae-4b6f-8401-f47a6df53278.png)
 
 ## Protocol Specification
 
