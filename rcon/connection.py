@@ -5,11 +5,12 @@ from rcon.util import int_to_bytes, bytes_to_int
 
 
 class Connection():
-    def __init__(self, host, port):
+    def __init__(self, host, port, timeout):
         self.sock = socket.socket(
             socket.AF_INET,
             socket.SOCK_STREAM
         )
+        self.sock.settimeout(timeout)
         self.sock.connect((host, port))
 
     def send_packet(self, packet: Packet):
