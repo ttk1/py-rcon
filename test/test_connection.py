@@ -10,7 +10,7 @@ class TestConnection(TestCase):
         sock = Mock()
         socket.socket.return_value = sock
         self.sock = sock
-        self.conn = Connection('localhost', 1234)
+        self.conn = Connection('localhost', 1234, 10)
 
     def test_host_and_port(self):
         expected = call(('localhost', 1234))

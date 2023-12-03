@@ -18,7 +18,7 @@ class TestConsole(TestCase):
     def test_init(self, _login, Connection):
         Console('localhost', 'password')
 
-        expected = call('localhost', 25575)
+        expected = call('localhost', 25575, 10)
         actual = Connection.call_args
         self.assertEqual(expected, actual)
 
@@ -30,10 +30,10 @@ class TestConsole(TestCase):
         actual = _login.call_args
         self.assertEqual(expected, actual)
 
-        # with port specitication
-        Console('localhost', 'password', port=1234)
+        # with port and timeout specification
+        Console('localhost', 'password', port=1234, timeout=123)
 
-        expected = call('localhost', 1234)
+        expected = call('localhost', 1234, 123)
         actual = Connection.call_args
         self.assertEqual(expected, actual)
 
