@@ -22,7 +22,7 @@ console.command('say hello')
 console.close()
 ```
 
-console output:
+Server console output:
 
 ```txt
 [04:14:25] [RCON Listener #1/INFO]: Thread RCON Client /127.0.0.1 started
