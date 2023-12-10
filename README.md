@@ -30,6 +30,33 @@ Server console output:
 [04:14:25] [RCON Client /127.0.0.1 #4/INFO]: Thread RCON Client /127.0.0.1 shutting down
 ```
 
+## Asynchronous IO Support (Experimental Feature)
+
+This can be used when asynchronous IO is needed, such as Discord bot.
+
+Below is an example using [discord.py](https://github.com/Rapptz/discord.py):
+
+```py
+import discord
+from rcon.async_support import Console
+
+intents = discord.Intents.default()
+client = discord.Client(intents=intents)
+tree = discord.app_commands.CommandTree(client)
+console = Console(host='localhost', password='rcon')
+
+
+@tree.command()
+async def mc_list(interaction: discord.Interaction):
+    if not console.is_open():
+        await console.open()
+    await interaction.response.defer()
+    res = await console.command('list')
+    await interaction.followup.send(res.body)
+
+client.run('TOKEN')
+```
+
 ## Shell Mode
 
 ```sh
