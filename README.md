@@ -1,6 +1,6 @@
 # py-rcon
 
-This is Python implementation of RCON.
+This is a Python implementation of RCON mainly for Minecraft.
 
 ## Requirements
 
