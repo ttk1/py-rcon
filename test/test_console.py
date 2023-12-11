@@ -79,7 +79,6 @@ class TestConsole(TestCase):
     def test_command(self, _get_id):
         _get_id.return_value = 1234
         self.conn.reset_mock()
-        self.conn.recv_packet.call_count = 0
         res_packet = Mock()
         res_packet.body = 'command response'
         self.conn.recv_packet.return_value = res_packet
@@ -138,7 +137,7 @@ class TestConsole(TestCase):
         self.assertEqual(expected, actual)
 
     def test_close(self):
-        self.conn.close.call_count = 0
+        self.conn.reset_mock()
         self.console.close()
 
         expected = 1
