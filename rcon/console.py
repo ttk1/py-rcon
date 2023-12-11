@@ -13,12 +13,11 @@ class Console():
         return self._id
 
     def _login(self, password):
-        req = Packet(
+        self._conn.send_packet(Packet(
             id=self._get_id(),
             type=PacketType.SERVERDATA_AUTH,
             body=password
-        )
-        self._conn.send_packet(req)
+        ))
         res = self._conn.recv_packet()
         if res.id == 4294967295:
             raise Exception('Authentication failed: wrong password')
@@ -34,19 +33,17 @@ class Console():
         res_body = res.body
         # Handle packet fragmentation
         if len(res_body) == 4096:
-            req_id = self._get_id()
-            req = Packet(
-                id=req_id,
+            self._conn.send_packet(Packet(
+                id=self._get_id(),
                 type=PacketType.INVALID_TYPE,
                 body=''
-            )
-            self._conn.send_packet(req)
+            ))
             while True:
                 res = self._conn.recv_packet()
-                if res.id == req_id:
-                    break
-                else:
+                if res.id == req.id:
                     res_body += res.body
+                else:
+                    break
         return res_body
 
     def close(self):

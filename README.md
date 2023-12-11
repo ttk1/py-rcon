@@ -52,7 +52,7 @@ async def mc_list(interaction: discord.Interaction):
         await console.open()
     await interaction.response.defer()
     res = await console.command('list')
-    await interaction.followup.send(res.body)
+    await interaction.followup.send(res)
 
 client.run('TOKEN')
 ```

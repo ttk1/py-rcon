@@ -63,36 +63,19 @@ class Console():
         return self._id
 
     async def _login(self):
-        req = Packet(
+        await self._conn.send_packet(Packet(
             id=self._get_id(),
             type=PacketType.SERVERDATA_AUTH,
             body=self._password
-        )
-        await self._conn.send_packet(req)
+        ))
         res = await self._conn.recv_packet()
         if res.id == 4294967295:
             raise Exception('Authentication failed: wrong password')
 
-    async def _recv_packet(self, packet_id):
-        if packet_id not in self._waiting_packet_ids:
-            self._waiting_packet_ids.append(packet_id)
-        while True:
-            packets = list(filter(lambda x: x.id == packet_id,
-                                  self._res_packets))
-            if packets:
-                packet = packets[0]
-                self._waiting_packet_ids.remove(packet_id)
-                self._res_packets.remove(packet)
-                return packet
-            if packet_id == self._waiting_packet_ids[0]:
-                packet = await self._conn.recv_packet()
-                self._res_packets.append(packet)
-            else:
-                await asyncio.sleep(1)
-
     async def open(self):
-        self._res_packets = []
+        self._res_bodies = {}
         self._waiting_packet_ids = []
+        self._last_received_id = 0
         self._id = 0
         self._conn = Connection(self._host, self._port, self._timeout)
         await self._conn.open()
@@ -109,8 +92,34 @@ class Console():
             type=PacketType.SERVERDATA_EXECCOMMAND,
             body=command
         )
+        self._waiting_packet_ids.append(req.id)
         await self._conn.send_packet(req)
-        return await self._recv_packet(req.id)
+        # TODO: もっといい感じにしたい
+        while True:
+            if req.id not in self._waiting_packet_ids:
+                return self._res_bodies.pop(req.id)
+            if req.id == self._waiting_packet_ids[0]:
+                res = await self._conn.recv_packet()
+                if res.id in self._waiting_packet_ids:
+                    if res.id in self._res_bodies:
+                        self._res_bodies[res.id] += res.body
+                    else:
+                        self._res_bodies[res.id] = res.body
+                    if len(res.body) == 4096:
+                        if len(self._waiting_packet_ids) == 1:
+                            await self._conn.send_packet(Packet(
+                                id=self._get_id(),
+                                type=PacketType.INVALID_TYPE,
+                                body=''
+                            ))
+                    else:
+                        self._waiting_packet_ids.remove(res.id)
+                if self._last_received_id != res.id:
+                    if self._last_received_id in self._waiting_packet_ids:
+                        self._waiting_packet_ids.remove(self._last_received_id)
+                    self._last_received_id = res.id
+            else:
+                await asyncio.sleep(1)
 
     def is_open(self):
         return self._is_open
