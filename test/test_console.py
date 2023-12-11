@@ -51,8 +51,7 @@ class TestConsole(TestCase):
     @patch('rcon.console.Console._get_id')
     def test_login(self, _get_id):
         _get_id.return_value = 1234
-        # reset call count of recv_packet
-        self.conn.recv_packet.call_count = 0
+        self.conn.reset_mock()
         self.console._login('password')
         packet = self.conn.send_packet.call_args.args[0]
 
@@ -79,29 +78,63 @@ class TestConsole(TestCase):
     @patch('rcon.console.Console._get_id')
     def test_command(self, _get_id):
         _get_id.return_value = 1234
-        # reset call count of recv_packet
+        self.conn.reset_mock()
         self.conn.recv_packet.call_count = 0
-        self.console.command('say hello')
-        packet = self.conn.send_packet.call_args.args[0]
+        res_packet = Mock()
+        res_packet.body = 'command response'
+        self.conn.recv_packet.return_value = res_packet
+        self.console.command('command')
+        req_packet = self.conn.send_packet.call_args.args[0]
 
         # ID
         expected = 1234
-        actual = packet.id
+        actual = req_packet.id
         self.assertEqual(expected, actual)
 
         # Type
         expected = PacketType.SERVERDATA_EXECCOMMAND
-        actual = packet.type
+        actual = req_packet.type
         self.assertEqual(expected, actual)
 
         # Body
-        expected = 'say hello'
-        actual = packet.body
+        expected = 'command'
+        actual = req_packet.body
         self.assertEqual(expected, actual)
 
         # check call count of recv_packet
         expected = 1
         actual = self.conn.recv_packet.call_count
+        self.assertEqual(expected, actual)
+
+    @patch('rcon.console.Console._get_id')
+    def test_handle_fragmentation(self, _get_id):
+        _get_id.side_effect = [1001, 1002]
+        self.conn.reset_mock()
+
+        res_packet1 = Mock()
+        res_packet1.body = 'a' * 4096
+        res_packet1.id = 1001
+        res_packet2 = Mock()
+        res_packet2.body = 'b' * 1000
+        res_packet2.id = 1001
+        res_packet3 = Mock()
+        res_packet3.body = 'error response'
+        res_packet3.id = 1002
+
+        self.conn.recv_packet.side_effect = [
+            res_packet1, res_packet2, res_packet3
+        ]
+        res_body = self.console.command('command')
+        second_req_packet = self.conn.send_packet.call_args_list[1].args[0]
+
+        # check second request packet type
+        expected = PacketType.INVALID_TYPE
+        actual = second_req_packet.type
+        self.assertEqual(expected, actual)
+
+        # check merged response
+        expected = 'a' * 4096 + 'b' * 1000
+        actual = res_body
         self.assertEqual(expected, actual)
 
     def test_close(self):

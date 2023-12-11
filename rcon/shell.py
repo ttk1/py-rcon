@@ -21,7 +21,7 @@ class Shell():
         while True:
             try:
                 command = input(f'[{self._host}:{self._port}] > ')
-                res_body = self._console.command(command).body
+                res_body = self._console.command(command)
                 print(remove_formatting_codes(res_body))
             except KeyboardInterrupt:
                 print()

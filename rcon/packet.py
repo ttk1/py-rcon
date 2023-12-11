@@ -8,6 +8,7 @@ class PacketType(Enum):
     SERVERDATA_AUTH_RESPONSE = 2
     SERVERDATA_EXECCOMMAND = 2
     SERVERDATA_RESPONSE_VALUE = 0
+    INVALID_TYPE = 99
 
 
 class Packet():

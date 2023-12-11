@@ -80,7 +80,7 @@ def main():
             if command_text.startswith('/'):
                 command_text = command_text[1:]
 
-            res_body = console.command(command_text).body
+            res_body = console.command(command_text)
 
             # Remove all formatting codes
             res_body = remove_formatting_codes(res_body)
